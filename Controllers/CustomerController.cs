@@ -1,5 +1,4 @@
-﻿using BillingApp.DTOs;
-using BillingApp.Models;
+﻿using BillingApp.Models;
 using BillingApp.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,12 +13,50 @@ namespace BillingApp.Controllers
         {
             _customerService = customerService;
         }
+
         [HttpGet]
         [Route("getAllCustomers")]
         public async Task<IActionResult> GetAllCustomers()
         {
-            List<CustomerDto> customers = await _customerService.GetAllCustomers();
+            List<Customer> customers = await _customerService.GetAllCustomers();
             return Ok(customers);
+        }
+
+        [HttpGet("getById/{id}")]
+        public async Task<IActionResult> GetCustomerById(int id)
+        {
+            var customer = await _customerService.GetCustomerById(id);
+            if (customer == null)
+                return NotFound("Customer not found");
+
+            return Ok(customer);
+        }
+
+        [HttpPost]
+        [Route("createCustomer")]
+        public async Task<IActionResult> CreateCustomer([FromBody] Customer customer)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var result = await _customerService.Create(customer);
+            return result > 0 ? Ok(new { message = "Customer created successfully", id = customer.Id }) : BadRequest();
+        }
+
+        [HttpPut]
+        [Route("updateCustomer")]
+        public async Task<IActionResult> UpdateCustomer([FromBody] Customer customer)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var result = await _customerService.Update(customer);
+            return result > 0 ? Ok("Customer updated successfully") : NotFound();
+        }
+
+        [HttpDelete("deleteCustomer/{id}")]
+        public async Task<IActionResult> DeleteCustomer(int id)
+        {
+            var result = await _customerService.Delete(id);
+            return result > 0 ? Ok("Customer deleted successfully") : NotFound();
         }
 
     }

@@ -1,5 +1,4 @@
-﻿using BillingApp.DTOs;
-using BillingApp.Models;
+﻿using BillingApp.Models;
 
 namespace BillingApp.Services
 {
@@ -10,6 +9,6 @@ namespace BillingApp.Services
         Task<int> Delete(int id);
         Task<Customer?> GetCustomerById(int id);
         //Task<List<Customer>> GetAllCustomers();
-        Task<List<CustomerDto>> GetAllCustomers();
+        Task<List<Customer>> GetAllCustomers();
     }
 }

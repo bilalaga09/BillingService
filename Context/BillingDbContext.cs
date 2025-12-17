@@ -10,5 +10,7 @@ namespace BillingApp.Context
             //Database.EnsureCreated();
         }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Invoice> Invoices { get; set; }
     }
 }

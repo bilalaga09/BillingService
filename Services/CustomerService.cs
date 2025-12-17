@@ -1,5 +1,4 @@
-﻿using BillingApp.DTOs;
-using BillingApp.Models;
+﻿using BillingApp.Models;
 using BillingApp.Repository;
 
 namespace BillingApp.Services
@@ -12,39 +11,42 @@ namespace BillingApp.Services
             _customerRepository = customerRepository;
         }
 
-        public Task<int> Create(Customer customer)
+        public async Task<int> Create(Customer customer)
         {
-            throw new NotImplementedException();
+            // Ensure server-controlled fields are set and client cannot override them
+            customer.Id = 0;
+            customer.Active = 'Y';
+            customer.CreatedAt ??= DateTime.UtcNow;
+
+            return await _customerRepository.Create(customer);
         }
 
-        public Task<int> Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<List<CustomerDto>> GetAllCustomers()
+        public async Task<List<Customer>> GetAllCustomers()
         {
             var customers = await _customerRepository.GetAllCustomers();
 
-            return customers.Select(c => new CustomerDto
-            {
-                Id = c.Id,
-                Name = c.Name,
-                Phone = c.Phone,
-                Email = c.Email,
-                Address = c.Address,
-                GSTNumber = c.GSTNumber
-            }).ToList();
+            return customers;
         }
 
-        public Task<Customer?> GetCustomerById(int id)
+        public async Task<Customer?> GetCustomerById(int id)
         {
-            throw new NotImplementedException();
+            var customer = await _customerRepository.GetCustomerById(id);
+            if (customer == null) return null;
+
+            return customer;
         }
 
-        public Task<int> Update(Customer customer)
+        public async Task<int> Update(Customer updatedCustomer)
         {
-            throw new NotImplementedException();
+            var existingCustomer = await _customerRepository.GetCustomerById(updatedCustomer.Id);
+            if (existingCustomer == null) return 0;
+
+            return await _customerRepository.Update(updatedCustomer);
+        }
+
+        public async Task<int> Delete(int id)
+        {
+            return await _customerRepository.Delete(id);
         }
     }
 }

@@ -8,6 +8,7 @@ namespace BillingApp.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        public int TenantId { get; set; }
 
         [Required]
         public string? Name { get; set; }
@@ -19,6 +20,8 @@ namespace BillingApp.Models
         public string? Email { get; set; }
         public string? Address { get; set; }
         public string? GSTNumber { get; set; }
-        public DateTime? CreatedDate { get; set; }
+        public DateTime? CreatedAt { get; set; }
+        // Use a char flag for Active state. Default to 'Y' for newly created customers.
+        public char Active { get; set; } = 'Y';
     }
 }

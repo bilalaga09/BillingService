@@ -1,5 +1,4 @@
 ﻿using BillingApp.Context;
-using BillingApp.DTOs;
 using BillingApp.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,29 +12,45 @@ namespace BillingApp.Repository
             _billingDbContext = billingDbContext;
         }
 
-        public Task<int> Create(Customer customer)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
         public async Task<List<Customer>> GetAllCustomers()
         {
             return await _billingDbContext.Customers
-                                 .AsNoTracking()
-             .ToListAsync();
-        }
-        public Task<Customer?> GetCustomerById(int id)
-        {
-            throw new NotImplementedException();
+                .AsNoTracking()
+                .Where(x => x.Active == 'Y')
+                .ToListAsync();
         }
 
-        public Task<int> Update(Customer customer)
+        public async Task<Customer?> GetCustomerById(int id)
         {
-            throw new NotImplementedException();
+            return await _billingDbContext.Customers
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == id && x.Active == 'Y');
         }
+
+        public async Task<int> Create(Customer customer)
+        {
+            // Ensure server-controlled fields have safe defaults
+            customer.CreatedAt ??= DateTime.UtcNow;
+            customer.Active = 'Y';
+
+            _billingDbContext.Customers.Add(customer);
+            return await _billingDbContext.SaveChangesAsync();
+        }
+
+        public async Task<int> Update(Customer customer)
+        {
+            _billingDbContext.Customers.Update(customer);
+            return await _billingDbContext.SaveChangesAsync();
+        }
+
+        public async Task<int> Delete(int id)
+        {
+            var customer = await _billingDbContext.Customers.FindAsync(id);
+            if (customer == null) return 0;
+
+            customer.Active = 'N';
+            return await _billingDbContext.SaveChangesAsync();
+        }
+
     }
 }
