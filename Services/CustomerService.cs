@@ -16,7 +16,7 @@ namespace BillingApp.Services
             // Ensure server-controlled fields are set and client cannot override them
             customer.Id = 0;
             customer.Active = 'Y';
-            customer.CreatedAt ??= DateTime.UtcNow;
+            customer.CreatedAt ??= DateTime.Now;
 
             return await _customerRepository.Create(customer);
         }

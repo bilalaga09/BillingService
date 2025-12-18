@@ -15,7 +15,7 @@ namespace BillingApp.Services
         {
             invoice.Id = 0;
             invoice.Active = 'Y';
-            invoice.InvoiceDate ??= DateTime.UtcNow;
+            invoice.InvoiceDate ??= DateTime.Now;
 
             return await _invoiceRepository.Create(invoice);
         }

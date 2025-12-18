@@ -8,7 +8,6 @@ namespace BillingApp.Services
         Task<int> Update(Customer customer);
         Task<int> Delete(int id);
         Task<Customer?> GetCustomerById(int id);
-        //Task<List<Customer>> GetAllCustomers();
         Task<List<Customer>> GetAllCustomers();
     }
 }
