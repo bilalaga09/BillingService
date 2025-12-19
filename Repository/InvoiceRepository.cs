@@ -30,7 +30,7 @@ namespace BillingApp.Repository
         public async Task<int> Create(Invoice invoice)
         {
             invoice.Active = 'Y';
-            invoice.InvoiceDate ??= DateTime.UtcNow;
+            invoice.InvoiceDate ??= DateTime.Now;
 
             _billingDbContext.Set<Invoice>().Add(invoice);
             return await _billingDbContext.SaveChangesAsync();

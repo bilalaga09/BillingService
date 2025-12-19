@@ -29,8 +29,7 @@ namespace BillingApp.Repository
 
         public async Task<int> Create(Customer customer)
         {
-            // Ensure server-controlled fields have safe defaults
-            customer.CreatedAt ??= DateTime.UtcNow;
+            customer.CreatedAt ??= DateTime.Now;
             customer.Active = 'Y';
 
             _billingDbContext.Customers.Add(customer);
