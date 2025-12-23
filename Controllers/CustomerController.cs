@@ -1,11 +1,13 @@
 ﻿using BillingApp.Models;
 using BillingApp.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BillingApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CustomerController : ControllerBase
     {
         readonly ICustomerService _customerService;

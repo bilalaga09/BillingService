@@ -47,7 +47,7 @@ namespace BillingApp.Mappings
 
             builder.Property(x => x.CreatedAt)
                    .HasColumnName("CreatedAt")
-                   .HasColumnType("datetime2")
+                   .HasColumnType("datetime")
                    .HasDefaultValueSql("SYSUTCDATETIME()");
 
             builder.Property(x => x.Active)
