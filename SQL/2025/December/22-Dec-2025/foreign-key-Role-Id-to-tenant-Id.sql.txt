@@ -1,0 +1,18 @@
+ALTER TABLE [billing].[Roles]
+DROP CONSTRAINT [FK_Roles_Tenants];
+GO
+
+ALTER TABLE [billing].[Roles]
+ADD CONSTRAINT [FK_Roles_Tenants]
+FOREIGN KEY ([TenantId])
+REFERENCES [billing].[Tenants] ([Id]);
+GO
+
+INSERT INTO [billing].[Roles]
+(TenantId, Name, CreatedAt, Active)
+VALUES
+(1, 'Admin',      GETDATE(), 'Y'),
+(1, 'Manager',    GETDATE(), 'Y'),
+(1, 'User',       GETDATE(), 'Y')
+
+GO

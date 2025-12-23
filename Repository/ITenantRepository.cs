@@ -1,4 +1,6 @@
-﻿namespace BillingApp.Repository
+﻿using BillingApp.Models;
+
+namespace BillingApp.Repository
 {
     public interface ITenantRepository
     {
