@@ -10,6 +10,9 @@ namespace BillingApp.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+        [MaxLength(100)]
+        public string? Code { get; set; }
+
         [Required]
         [MaxLength(200)]
         public string Name { get; set; } = null!;

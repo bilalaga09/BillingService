@@ -61,11 +61,11 @@ namespace BillingApp.Repository
             user.Active = 'N';
             return await _billingDbContext.SaveChangesAsync();
         }
-        public async Task<User?> Login( string email)
+        public async Task<User?> Login( string username)
         {
             return await _billingDbContext.Users
                 .FirstOrDefaultAsync(x =>
-                    x.Email == email &&
+                    x.UserName == username &&
                     x.Active == 'Y');
         }
 

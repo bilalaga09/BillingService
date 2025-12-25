@@ -10,11 +10,14 @@ namespace BillingApp.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly ILogger<UserController> _logger;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, ILogger<UserController> logger)
         {
             _userService = userService;
+            _logger = logger;
         }
+
         [HttpGet("getAllUsers/{tenantId:int}")]
         public async Task<ActionResult<List<User>>> GetAllUsers(int tenantId)
         {
@@ -92,6 +95,21 @@ namespace BillingApp.Controllers
                 return Unauthorized("Invalid username or password");
 
             return Ok(new { token });
+        }
+
+        // 🔹 Change password
+        [HttpPost("changePassword")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var userName = request.Username;
+            var changed = await _userService.ChangePassword(userName, request);
+            if (!changed)
+                return BadRequest("Current password is incorrect or user not found.");
+
+            return NoContent();
         }
     }
 }

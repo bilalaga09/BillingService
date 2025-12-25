@@ -47,7 +47,6 @@ namespace BillingApp.Middleware
                 _logger.LogCritical(ex, "An unexpected error occurred.");
                 httpContext.Response.StatusCode = 500;
                 await httpContext.Response.WriteAsJsonAsync(new { statusCode = httpContext.Response.StatusCode, message = "An unexpected error occurred.", details = ex.Message });
-                throw;
             }
         }
     }
