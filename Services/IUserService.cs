@@ -11,6 +11,7 @@ namespace BillingApp.Services
         Task<List<User>> GetAllUsers(int tenantId);
         Task<User?> GetByUserName(int tenantId, string userName);
         Task<string?> Login(UserLogin login);
+        Task<bool> ChangePassword(string userName, ChangePasswordRequest request);
 
     }
 }
