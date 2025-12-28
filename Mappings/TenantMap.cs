@@ -21,6 +21,10 @@ internal class TenantMap : IEntityTypeConfiguration<Tenant>
                .IsRequired()
                .HasMaxLength(200);
 
+        builder.Property(x => x.Code)
+       .HasColumnName("Code")
+       .HasMaxLength(50);
+
         builder.Property(x => x.Phone)
                .HasColumnName("Phone")
                .HasMaxLength(20);
