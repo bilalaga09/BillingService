@@ -20,6 +20,26 @@ namespace BillingApp.Repository
                 .ToListAsync();
         }
 
+        public async Task<(List<Customer> Items, int TotalCount)> GetAllCustomersPaged(int page, int pageSize)
+        {
+            if (page <= 0) page = 1;
+            if (pageSize <= 0) pageSize = 10;
+
+            var query = _billingDbContext.Customers
+                .AsNoTracking()
+                .Where(x => x.Active == 'Y')
+                .OrderBy(x => x.Id);
+
+            var total = await query.CountAsync();
+
+            var items = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (items, total);
+        }
+
         public async Task<Customer?> GetCustomerById(int id)
         {
             return await _billingDbContext.Customers

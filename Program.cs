@@ -95,6 +95,21 @@ builder.Services.AddSwaggerGen(
         });
     });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularApp", policy =>
+    {
+        policy
+            .WithOrigins(
+                "http://localhost:4200",   // Angular dev
+                "https://localhost:4200"   // if using https
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials(); // only if using cookies or auth headers
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -105,6 +120,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAngularApp");
+
 
 app.UseAuthentication();
 app.UseAuthorization();

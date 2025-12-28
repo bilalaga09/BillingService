@@ -9,5 +9,6 @@ namespace BillingApp.Services
         Task<int> Delete(int id);
         Task<Customer?> GetCustomerById(int id);
         Task<List<Customer>> GetAllCustomers();
+        Task<PagedResult<Customer>> GetAllCustomersPaged(int page, int pageSize);
     }
 }

@@ -9,6 +9,7 @@ namespace BillingApp.Repository
         Task<int> Delete(int id);
         Task<Customer?> GetCustomerById(int id);
         Task<List<Customer>> GetAllCustomers();
+        Task<(List<Customer> Items, int TotalCount)> GetAllCustomersPaged(int page, int pageSize);
     }
 
 }
