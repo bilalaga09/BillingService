@@ -18,8 +18,16 @@ namespace BillingApp.Controllers
 
         [HttpGet]
         [Route("getAllCustomers")]
-        public async Task<IActionResult> GetAllCustomers()
+        public async Task<IActionResult> GetAllCustomers([FromQuery] int? page, [FromQuery] int? pageSize)
         {
+            if (page.HasValue || pageSize.HasValue)
+            {
+                var p = page ?? 1;
+                var ps = pageSize ?? 10;
+                var result = await _customerService.GetAllCustomersPaged(p, ps);
+                return Ok(result);
+            }
+
             List<Customer> customers = await _customerService.GetAllCustomers();
             return Ok(customers);
         }

@@ -28,6 +28,18 @@ namespace BillingApp.Services
             return customers;
         }
 
+        public async Task<PagedResult<Customer>> GetAllCustomersPaged(int page, int pageSize)
+        {
+            var (items, total) = await _customerRepository.GetAllCustomersPaged(page, pageSize);
+            return new PagedResult<Customer>
+            {
+                Items = items,
+                TotalCount = total,
+                Page = page,
+                PageSize = pageSize
+            };
+        }
+
         public async Task<Customer?> GetCustomerById(int id)
         {
             var customer = await _customerRepository.GetCustomerById(id);

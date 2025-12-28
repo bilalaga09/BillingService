@@ -2,6 +2,7 @@
 using BillingApp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace BillingApp.Controllers
 {
@@ -16,6 +17,32 @@ namespace BillingApp.Controllers
         {
             _userService = userService;
             _logger = logger;
+        }
+
+        [HttpGet("me")]
+        [Authorize]
+        public async Task<IActionResult> GetCurrentUser()
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (userIdClaim == null)
+                return Unauthorized();
+
+            int userId = int.Parse(userIdClaim.Value);
+
+            var user = await _userService.GetUserById(userId);
+
+            if (user == null)
+                return NotFound();
+
+            return Ok(new
+            {
+                user.Id,
+                user.UserName,
+                user.Email,
+                user.RoleId,
+                user.TenantId
+            });
         }
 
         [HttpGet("getAllUsers/{tenantId:int}")]
